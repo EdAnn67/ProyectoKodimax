@@ -6,3 +6,6 @@ C:\Users\edann\Desktop\MovieTheater\MovieTheater\obj\Debug\MovieTheater.exe
 C:\Users\edann\Desktop\MovieTheater\MovieTheater\obj\Debug\MovieTheater.pdb
 C:\Users\edann\Desktop\MovieTheater\MovieTheater\bin\Debug\Newtonsoft.Json.dll
 C:\Users\edann\Desktop\MovieTheater\MovieTheater\bin\Debug\Newtonsoft.Json.xml
+C:\Users\edann\Desktop\Repositories\Kodimax\ProyectoKodimax\MovieTheater\MovieTheater\bin\Debug\MovieTheater.exe.config
+C:\Users\edann\Desktop\Repositories\Kodimax\ProyectoKodimax\MovieTheater\MovieTheater\obj\Debug\MovieTheater.exe
+C:\Users\edann\Desktop\Repositories\Kodimax\ProyectoKodimax\MovieTheater\MovieTheater\obj\Debug\MovieTheater.pdb

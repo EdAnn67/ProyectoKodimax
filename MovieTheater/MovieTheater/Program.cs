@@ -14,19 +14,24 @@ namespace MovieTheater
         private static List<User> Employee = new List<User>();
         private static List<Movie> Movies = new List<Movie>();
         private static List<Snacks> Snack = new List<Snacks>();
+        private static List<Subsidiary> Subsidiaries = new List<Subsidiary>();
 
         static int Lev;
         static int Continue;
+        static double[] Prices = new double[2];
 
 
         static void Main(string[] args)
         {
+            Prices[0] = 7.25;
+            Prices[1] = 1.25;
             Continue = 0;
             bool exists;
             int exit = 1;
             User BT = new User();
             Movie MV = new Movie();
             Snacks SN = new Snacks();
+            Subsidiary Sub = new Subsidiary();
 
 
             BT.Name = "Eduardo Andrés ";
@@ -51,6 +56,10 @@ namespace MovieTheater
             SN.price = 3.50;
             SN.Type = "Palomitas";
             Snack.Add(SN);
+
+            Sub.ID = 1;
+            Sub.Name = "Soyapango";
+            Subsidiaries.Add(Sub);
 
             string user, password;
             int Option;
@@ -133,12 +142,13 @@ namespace MovieTheater
                 Console.WriteLine("2 - Ver tienda de Golosinas");
                 Console.WriteLine("3 - Comprar Boletos");
                 Console.WriteLine("4 - Comprar Golosinas");
-                Console.WriteLine("5 - Salir");
+                Console.WriteLine("5 - Ver Sucursales");
+                Console.WriteLine("6 - Salir");
                 do
                 {
                     Console.Write("Opcion: ");
                     Op = int.Parse(Console.ReadLine());
-                } while (Op < 1 || Op > 5);
+                } while (Op < 1 || Op > 6);
                 if(Op == 1)
                 {
                     foreach(var y in Movies)
@@ -177,6 +187,8 @@ namespace MovieTheater
                     Console.WriteLine("1 - Estandar     $3.55");
                     Console.WriteLine("2 - Premium      $4.75");
                     Console.WriteLine("3 - V.I.P        $6.50");
+                    Console.WriteLine("3 - Autocine     $7.25 + Parqueo");
+
                     int Room;
                     int Quantity;
                     double subtotal;
@@ -200,7 +212,7 @@ namespace MovieTheater
                     {
                         Console.Write("Ingrese el tipo de sala que desea: ");
                         Room = int.Parse(Console.ReadLine());
-                    } while (Room < 1 || Room > 3);
+                    } while (Room < 1 || Room > 4);
                     do
                     {
                         Console.Write("Ingrese la cantidad de boletos que desea: ");
@@ -215,9 +227,20 @@ namespace MovieTheater
                     {
                         subtotal = 4.75 * Quantity;
                     }
-                    else
+                    else if(Room == 3)
                     {
                         subtotal = 6.5 * Quantity;
+                    }
+                    else
+                    {
+                        double Time = 0;
+                        subtotal = Prices[0] * Quantity;
+                        do
+                        {
+                            Console.Write("Ingrese el tiempo de parqueo: ");
+                            Time = double.Parse(Console.ReadLine());
+                        } while (Time < 1);
+                        subtotal += Time * Prices[1];
                     }
                     int a = 0;
                     foreach(var y in Employee)
@@ -230,10 +253,29 @@ namespace MovieTheater
                     x =  0;
                     Random z = new Random(a);
                     int c = z.Next();
-                    
+
+                    do
+                    {
+                        Console.Write("Ingrese la cantidad de boletos que desea: ");
+                        Quantity = int.Parse(Console.ReadLine());
+                    } while (Quantity < 0);
+
+
+                    foreach (var item in Subsidiaries)
+                    {
+                        Console.WriteLine((item.ID + 1) + " - " + item.Name);
+                    }
+                    int Subs;
+                    do
+                    {
+                        Console.Write("Subsidiaria: ");
+                        Subs = int.Parse(Console.ReadLine());
+                    } while (Subs < 1 || Subs > Subsidiaries.Count);
+
                     Console.WriteLine("KODIMAX");
                     //Console.WriteLine("Atendido por: " + People[c].Name + " " + People[c].LastName);
                     Console.WriteLine("Hora: " + DateTime.Now.ToString("hh:mm:ss"));
+                    Console.WriteLine("Sucursal: " + Subsidiaries[Subs - 1].Name);
                     Console.WriteLine("Fecha: " + DateTime.Now.ToLongDateString());
                     Console.WriteLine("Sub-Total: " + subtotal);
                     Console.WriteLine("Impuesto: " + (subtotal * 0.3533));
@@ -342,6 +384,16 @@ namespace MovieTheater
                     }
                     Console.ReadKey();
                 }
+                
+                else if(Op == 5)
+                {
+                    foreach (var item in Subsidiaries)
+                    {
+                        Console.WriteLine((item.ID + 1) + " - " + item.Name);
+                    }
+                    Console.Write("Presione cualquier tecla para continuar.");
+                    Console.ReadKey();
+                }
             }
 
 
@@ -355,7 +407,9 @@ namespace MovieTheater
                 Console.WriteLine("---------------MENÚ---------------");
                 Console.WriteLine("1 - Modificar Cartelera");
                 Console.WriteLine("2 - Modificar tienda de Golosinas");
-                Console.WriteLine("3 - Salir");
+                Console.WriteLine("3 - Modificar Cartelera");
+                Console.WriteLine("4 - Modificar Precios autocine");
+                Console.WriteLine("5 - Salir");
                 do
                 {
                     Console.Write("Opcion: ");
@@ -368,6 +422,14 @@ namespace MovieTheater
                 else if (Op == 2)
                 {
                     ModifySnacks();
+                }
+                else if (Op == 3)
+                {
+                    ModifySubs();
+                }
+                else if (Op == 4)
+                {
+                    ModifyPrices();
                 }
                 else
                 {
@@ -612,6 +674,107 @@ namespace MovieTheater
             }
 
         }
+
+
+
+
+
+        public static void ModifySubs()
+        {
+            Subsidiary Subsid = new Subsidiary();
+            int Opt;
+            Console.Clear();
+            Console.WriteLine("Seleccione la opcion que desea ejecutar: ");
+            Console.WriteLine("1 - Agregar subsidiaria");
+            Console.WriteLine("2 - Eliminar subsidiaria");
+            do
+            {
+                Console.Write("Opcion: ");
+                Opt = int.Parse(Console.ReadLine());
+            } while (Opt < 1 || Opt > 2);
+
+            if (Opt == 1)
+            {
+                Console.Write("Ingrese el id de la subsidiaria: ");
+                Subsid.ID = int.Parse(Console.ReadLine());
+                Console.Write("Ingrese el nombre de la subsidiaria: ");
+                Subsid.Name = Console.ReadLine();
+                Subsidiaries.Add(Subsid);
+            }
+            else if (Opt == 2)
+            {
+                foreach (var y in Subsidiaries)
+                {
+                    Console.WriteLine("Id Subsidiaria: " + y.ID);
+                    Console.WriteLine("Nombre: " + y.Name);
+                }
+                Console.Write("Presione una tecla para continuar: ");
+                Console.ReadKey();
+
+                Console.Write("Ingrese el id de la subsidiaria que desea Eliminar: ");
+                int Op = int.Parse(Console.ReadLine());
+                int x = 0;
+                foreach (var y in Subsidiaries)
+                {
+                    if (y.ID == Op)
+                    {
+                        break;
+                    }
+                    x++;
+                }
+                Subsidiaries.RemoveAt(x);
+            }
+            else
+            {
+
+            }
+
+        }
+
+
+
+
+
+
+        public static void ModifyPrices()
+        {
+            int Opt;
+            Console.Clear();
+            Console.WriteLine("Seleccione la opcion que desea ejecutar: ");
+            Console.WriteLine("1 - Modificar Precio de Boleto Autocine");
+            Console.WriteLine("2 - Modificar Precio de Parqueo");
+            do
+            {
+                Console.Write("Opcion: ");
+                Opt = int.Parse(Console.ReadLine());
+            } while (Opt < 1 || Opt > 2);
+
+            if (Opt == 1)
+            {
+                do
+                {
+                    Console.Write("Ingrese el precio del boleto: ");
+                    Prices[0] = double.Parse(Console.ReadLine());
+                } while (Prices[0] <= 0);
+            }
+            else if (Opt == 2)
+            {
+                do
+                {
+                    Console.Write("Ingrese el precio del parqueo: ");
+                    Prices[1] = double.Parse(Console.ReadLine());
+                } while (Prices[1] <= 0);
+            }
+            else
+            {
+
+            }
+
+        }
+
+
+
+
 
         public static void ModifyUser()
         {
